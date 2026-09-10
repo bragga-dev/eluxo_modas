@@ -1,16 +1,23 @@
 import { Link } from "react-router-dom";
 import type { ProductListItem } from "@/types/product";
+import type { ProductRatingSummary } from "@/types/review";
 import { ProductPrice } from "./ProductPrice";
+import { StarRatingDisplay } from "@/components/ui/StarRating";
 import { rememberProduct } from "@/lib/productCache";
 
-export function ProductCard({ product }: { product: ProductListItem }) {
+interface ProductCardProps {
+  product: ProductListItem;
+  rating?: ProductRatingSummary;
+}
+
+export function ProductCard({ product, rating }: ProductCardProps) {
   return (
-    <Link
-      to={`/produtos/${product.product_id}`}
-      onClick={() => rememberProduct(product)}
-      className="group flex flex-col gap-3"
-    >
-      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-cream">
+    <div className="group flex flex-col gap-3">
+      <Link
+        to={`/produtos/${product.product_id}`}
+        onClick={() => rememberProduct(product)}
+        className="relative block aspect-[3/4] w-full overflow-hidden rounded-lg bg-cream"
+      >
         {product.cover_image ? (
           <img
             src={product.cover_image.product_image_url}
@@ -28,12 +35,28 @@ export function ProductCard({ product }: { product: ProductListItem }) {
             Esgotado
           </span>
         )}
-      </div>
-      <div className="flex flex-col gap-1">
+      </Link>
+
+      <div className="flex flex-1 flex-col gap-1">
         <span className="text-xs uppercase tracking-wide text-ink/50">{product.category.category_name}</span>
-        <h3 className="line-clamp-1 text-sm font-medium text-ink">{product.product_name}</h3>
+        <Link to={`/produtos/${product.product_id}`} onClick={() => rememberProduct(product)}>
+          <h3 className="line-clamp-1 text-sm font-medium text-ink hover:text-gold-dark">{product.product_name}</h3>
+        </Link>
+
+        {rating && rating.total_reviews > 0 && (
+          <StarRatingDisplay value={Number(rating.average_rating)} totalReviews={rating.total_reviews} size={13} />
+        )}
+
         <ProductPrice minPrice={product.min_price} maxPrice={product.max_price} />
       </div>
-    </Link>
+
+      <Link
+        to={`/produtos/${product.product_id}`}
+        onClick={() => rememberProduct(product)}
+        className="mt-auto block w-full rounded-lg bg-gold py-2 text-center text-sm font-semibold text-white transition-colors hover:bg-gold-dark"
+      >
+        Comprar
+      </Link>
+    </div>
   );
 }

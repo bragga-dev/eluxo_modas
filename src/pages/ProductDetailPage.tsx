@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getProduct, listProducts } from "@/api/products";
 import { quoteShipping } from "@/api/shipping";
+import { getProductRatingSummary } from "@/api/reviews";
 import { rememberProduct } from "@/lib/productCache";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
@@ -11,6 +12,8 @@ import { ProductGallery } from "@/components/product/ProductGallery";
 import { VariantSelector } from "@/components/product/VariantSelector";
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { ProductGrid } from "@/components/product/ProductGrid";
+import { ProductReviews } from "@/components/product/ProductReviews";
+import { StarRatingDisplay } from "@/components/ui/StarRating";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { QuantitySelector } from "@/components/ui/QuantitySelector";
@@ -56,6 +59,12 @@ export function ProductDetailPage() {
     queryFn: () =>
       listProducts({ product_category_id: product?.category.product_category_id, page_size: 5, in_stock_only: true }),
     enabled: Boolean(product),
+  });
+
+  const ratingSummaryQuery = useQuery({
+    queryKey: ["reviews", "summary", productId],
+    queryFn: () => getProductRatingSummary(productId as string),
+    enabled: Boolean(productId),
   });
 
   if (productQuery.isLoading) {
@@ -146,6 +155,15 @@ export function ProductDetailPage() {
             <h1 className="mt-1 font-display text-2xl text-ink sm:text-3xl">{product.product_name}</h1>
           </div>
 
+          {ratingSummaryQuery.data && ratingSummaryQuery.data.total_reviews > 0 && (
+            <a href="#avaliacoes" className="-mt-2 w-fit">
+              <StarRatingDisplay
+                value={Number(ratingSummaryQuery.data.average_rating)}
+                totalReviews={ratingSummaryQuery.data.total_reviews}
+              />
+            </a>
+          )}
+
           <ProductPrice minPrice={product.min_price} maxPrice={product.max_price} />
 
           {selectedVariant?.gender && (
@@ -230,6 +248,8 @@ export function ProductDetailPage() {
           <ProductGrid products={relatedProducts} />
         </section>
       )}
+
+      <ProductReviews productId={product.product_id} />
     </div>
   );
 }

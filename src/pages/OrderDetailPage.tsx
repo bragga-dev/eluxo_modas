@@ -1,14 +1,18 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { cancelMyOrder, getMyOrder } from "@/api/orders";
 import { listOrderPayments } from "@/api/payments";
 import { getMyAddress } from "@/api/address";
+import { listMyReviews } from "@/api/reviews";
 import { useToast } from "@/hooks/useToast";
 import { getCachedProductForVariant } from "@/lib/productCache";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { ErrorState } from "@/components/ui/StatusStates";
+import { StarRatingDisplay } from "@/components/ui/StarRating";
+import { ReviewFormModal } from "@/components/product/ReviewFormModal";
 import { formatCurrency, formatDateTime } from "@/lib/formatters";
 import { ORDER_STATUS_STYLES } from "@/types/order";
 import { BILLING_TYPE_LABELS } from "@/types/payment";
@@ -37,6 +41,13 @@ export function OrderDetailPage() {
     queryFn: () => getMyAddress(orderQuery.data!.shipping_address_id),
     enabled: Boolean(orderQuery.data?.shipping_address_id),
   });
+
+  const myReviewsQuery = useQuery({
+    queryKey: ["reviews", "me"],
+    queryFn: listMyReviews,
+  });
+
+  const [reviewingItemId, setReviewingItemId] = useState<string | null>(null);
 
   const cancelMutation = useMutation({
     mutationFn: () => cancelMyOrder(orderId as string),
@@ -73,14 +84,45 @@ export function OrderDetailPage() {
             const attrs = [item.variant.color ? PRODUCT_COLOR_LABELS[item.variant.color] : null, item.variant.size]
               .filter(Boolean)
               .join(" · ");
+            const myReview = myReviewsQuery.data?.find((r) => r.order_item.order_item_id === item.order_item_id);
+            const productName = cached?.productName ?? "Produto";
+
             return (
-              <li key={item.order_item_id} className="flex items-center justify-between gap-4 py-3">
+              <li key={item.order_item_id} className="flex flex-wrap items-center justify-between gap-3 py-3">
                 <div>
-                  <p className="text-sm font-medium text-ink">{cached?.productName ?? "Produto"}</p>
+                  <p className="text-sm font-medium text-ink">{productName}</p>
                   {attrs && <p className="text-xs text-ink/50">{attrs}</p>}
                   <p className="text-xs text-ink/50">Qtd: {item.order_item_quantity}</p>
+
+                  {order.order_status === "COMPLETED" && (
+                    <div className="mt-2">
+                      {myReview ? (
+                        <button
+                          onClick={() => setReviewingItemId(item.order_item_id)}
+                          className="flex items-center gap-2 text-xs text-ink/60 hover:text-gold-dark"
+                        >
+                          <StarRatingDisplay value={myReview.reviews} size={12} />
+                          {myReview.is_authorized ? "Sua avaliação" : "Aguardando moderação"} · editar
+                        </button>
+                      ) : (
+                        <Button variant="outline" size="sm" onClick={() => setReviewingItemId(item.order_item_id)}>
+                          Avaliar produto
+                        </Button>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <span className="text-sm font-medium text-ink">{formatCurrency(item.subtotal)}</span>
+
+                {reviewingItemId === item.order_item_id && (
+                  <ReviewFormModal
+                    isOpen
+                    onClose={() => setReviewingItemId(null)}
+                    orderItemId={item.order_item_id}
+                    productName={productName}
+                    existingReview={myReview}
+                  />
+                )}
               </li>
             );
           })}

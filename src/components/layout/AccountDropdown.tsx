@@ -24,7 +24,7 @@ export function AccountDropdown() {
   async function handleLogout() {
     await logout();
     close();
-    navigate("/");
+    navigate("/entrar");
   }
 
   const displayName = isAuthenticated ? getClientDisplayName(me) : null;

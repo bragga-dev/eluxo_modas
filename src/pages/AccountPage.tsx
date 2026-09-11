@@ -1,4 +1,4 @@
-import { useRef, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { useMutation } from "@tanstack/react-query";
 import * as authApi from "@/api/auth";
 import { useAuth } from "@/hooks/useAuth";
@@ -19,7 +19,6 @@ const GENDER_OPTIONS: { value: Gender; label: string }[] = [
 export function AccountPage() {
   const { me, applyClientUpdate } = useAuth();
   const { showToast } = useToast();
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [form, setForm] = useState<ClientUpdatePayload>({
     username: me?.client?.username ?? "",
@@ -45,23 +44,6 @@ export function AccountPage() {
     },
   });
 
-  const photoMutation = useMutation({
-    mutationFn: authApi.uploadClientPhoto,
-    onSuccess: (client) => {
-      applyClientUpdate(client);
-      showToast("Foto atualizada.", "success");
-    },
-    onError: (error) => showToast(error instanceof ApiError ? error.detail : "Não foi possível enviar a foto.", "error"),
-  });
-
-  const removePhotoMutation = useMutation({
-    mutationFn: authApi.deleteClientPhoto,
-    onSuccess: (client) => {
-      applyClientUpdate(client);
-      showToast("Foto removida.", "success");
-    },
-  });
-
   function setField<K extends keyof ClientUpdatePayload>(key: K, value: ClientUpdatePayload[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
@@ -73,38 +55,6 @@ export function AccountPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <section className="flex items-center gap-4">
-        <div className="h-20 w-20 overflow-hidden rounded-full bg-cream">
-          {me?.client?.photo_url ? (
-            <img src={me.client.photo_url} alt="Foto de perfil" className="h-full w-full object-cover" />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center text-2xl text-ink/30">
-              {me?.user.email.charAt(0).toUpperCase()}
-            </div>
-          )}
-        </div>
-        <div className="flex gap-2">
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) photoMutation.mutate(file);
-            }}
-          />
-          <Button variant="outline" size="sm" onClick={() => fileInputRef.current?.click()} isLoading={photoMutation.isPending}>
-            Alterar foto
-          </Button>
-          {me?.client?.photo_url && (
-            <Button variant="ghost" size="sm" onClick={() => removePhotoMutation.mutate()}>
-              Remover
-            </Button>
-          )}
-        </div>
-      </section>
-
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 rounded-xl border border-black/10 p-6">
         <h2 className="font-display text-lg text-ink">Informações pessoais</h2>
 

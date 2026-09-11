@@ -127,7 +127,7 @@ export function LoginPage() {
         </div>
 
         <Button type="submit" size="lg" fullWidth isLoading={isSubmitting}>
-          Entrar
+          Entrar 
         </Button>
       </form>
 

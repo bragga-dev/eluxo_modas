@@ -53,7 +53,7 @@ export function CartPage() {
         </button>
       </div>
 
-      <aside className="h-fit rounded-xl border border-black/10 p-6">
+      <aside className="h-fit bg-cream/60 p-6">
         <h2 className="mb-4 font-display text-lg text-ink">Resumo do Pedido</h2>
         <div className="flex flex-col gap-2 text-sm">
           <div className="flex justify-between text-ink/70">

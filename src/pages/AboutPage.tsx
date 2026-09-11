@@ -9,7 +9,7 @@ export function AboutPage() {
         você em todos os momentos.
       </p>
 
-      <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
+      <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-3">
         <InfoCard title="Qualidade garantida" description="Peças selecionadas com atenção a cada detalhe." />
         <InfoCard title="Atendimento especializado" description="Um time pronto para te ajudar a encontrar o look ideal." />
         <InfoCard title="Entrega rápida" description="Enviamos para todo o Brasil com agilidade." />
@@ -20,7 +20,7 @@ export function AboutPage() {
 
 function InfoCard({ title, description }: { title: string; description: string }) {
   return (
-    <div className="rounded-xl border border-black/10 p-5">
+    <div className="border-t border-gold/40 pt-4">
       <h3 className="font-display text-base text-ink">{title}</h3>
       <p className="mt-1 text-sm text-ink/60">{description}</p>
     </div>

@@ -69,8 +69,8 @@ export function SecurityPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <form onSubmit={handlePasswordSubmit} className="flex flex-col gap-4 rounded-xl border border-black/10 p-6">
-        <h2 className="font-display text-lg text-ink">Alterar senha</h2>
+      <form onSubmit={handlePasswordSubmit} className="flex flex-col gap-4 border-t border-black/8 pt-8">
+        <h2 className="font-display text-xl text-ink">Alterar senha</h2>
         <Input
           label="Senha atual"
           type="password"
@@ -102,8 +102,8 @@ export function SecurityPage() {
         </Button>
       </form>
 
-      <section className="rounded-xl border border-black/10 p-6">
-        <h2 className="mb-4 font-display text-lg text-ink">Sessões ativas</h2>
+      <section className="border-t border-black/8 pt-8">
+        <h2 className="mb-4 font-display text-xl text-ink">Sessões ativas</h2>
         {sessionsQuery.isLoading && <Skeleton className="h-16 w-full" />}
         {sessionsQuery.data?.length === 0 && <p className="text-sm text-ink/60">Nenhuma sessão ativa.</p>}
         <ul className="flex flex-col gap-3">
@@ -121,7 +121,7 @@ export function SecurityPage() {
         </ul>
       </section>
 
-      <section className="rounded-xl border border-red-100 bg-red-50/40 p-6">
+      <section className="border-l-2 border-red-400 bg-red-50/40 p-6">
         <h2 className="mb-2 font-display text-lg text-ink">Excluir conta</h2>
         <p className="mb-4 text-sm text-ink/60">
           Essa ação é permanente e remove todos os seus dados de acordo com nossa política de privacidade.

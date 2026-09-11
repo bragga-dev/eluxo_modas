@@ -33,10 +33,50 @@ export interface ClientProfile {
   cpf: string | null;
 }
 
+/** Espelha AdminProfileOut (accounts/schemas/admin_schema.py). */
+export interface AdminProfile {
+  admin_id: string;
+  full_name: string;
+  photo_url: string | null;
+}
+
+/** Payload de PATCH /auth/update-admin-profile. */
+export interface AdminProfileUpdatePayload {
+  full_name: string;
+}
+
 /** Espelha MeOut. */
 export interface Me {
   user: User;
   client: ClientProfile | null;
+  admin: AdminProfile | null;
+}
+
+/**
+ * Espelha UserAdminOut (accounts/schemas/user_schema.py) — usado na
+ * listagem/detalhe de usuários do painel admin (GET /admin/list-users,
+ * GET /admin/detail-user/{user_id}).
+ */
+export interface UserAdmin {
+  user_id: string;
+  email: string;
+  role: UserRole;
+  role_label: string | null;
+  is_trusty: boolean;
+  is_active: boolean;
+  date_joined: string;
+  created_at: string;
+  display_name: string | null;
+  photo_url: string | null;
+}
+
+/** Query params de GET /admin/list-users. */
+export interface ListUsersAdminParams {
+  page?: number;
+  page_size?: number;
+  search?: string;
+  role?: UserRole;
+  is_active?: boolean;
 }
 
 /**

@@ -56,11 +56,16 @@ export function OrderDetailPage() {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
       showToast("Pedido cancelado.", "success");
     },
-    onError: (error) => showToast(error instanceof ApiError ? error.detail : "Não foi possível cancelar o pedido.", "error"),
+    onError: (error) =>
+      showToast(
+        error instanceof ApiError ? error.detail : "Não foi possível cancelar o pedido.",
+        "error"
+      ),
   });
 
   if (orderQuery.isLoading) return <Skeleton className="h-96 w-full" />;
-  if (orderQuery.isError || !orderQuery.data) return <ErrorState onRetry={() => orderQuery.refetch()} />;
+  if (orderQuery.isError || !orderQuery.data)
+    return <ErrorState onRetry={() => orderQuery.refetch()} />;
 
   const order = orderQuery.data;
   const latestPayment = paymentsQuery.data?.[paymentsQuery.data.length - 1];
@@ -73,7 +78,9 @@ export function OrderDetailPage() {
           <h2 className="font-display text-xl text-ink">Pedido #{order.code}</h2>
           <p className="text-sm text-ink/60">{formatDateTime(order.created_at)}</p>
         </div>
-        <Badge className={ORDER_STATUS_STYLES[order.order_status]}>{order.order_status_label}</Badge>
+        <Badge className={ORDER_STATUS_STYLES[order.order_status]}>
+          {order.order_status_label}
+        </Badge>
       </div>
 
       <section className="rounded-xl border border-black/10 p-6">
@@ -81,14 +88,22 @@ export function OrderDetailPage() {
         <ul className="flex flex-col divide-y divide-black/5">
           {order.items.map((item) => {
             const cached = getCachedProductForVariant(item.variant.variant_id);
-            const attrs = [item.variant.color ? PRODUCT_COLOR_LABELS[item.variant.color] : null, item.variant.size]
+            const attrs = [
+              item.variant.color ? PRODUCT_COLOR_LABELS[item.variant.color] : null,
+              item.variant.size,
+            ]
               .filter(Boolean)
               .join(" · ");
-            const myReview = myReviewsQuery.data?.find((r) => r.order_item.order_item_id === item.order_item_id);
+            const myReview = myReviewsQuery.data?.find(
+              (r) => r.order_item.order_item_id === item.order_item_id
+            );
             const productName = cached?.productName ?? "Produto";
 
             return (
-              <li key={item.order_item_id} className="flex flex-wrap items-center justify-between gap-3 py-3">
+              <li
+                key={item.order_item_id}
+                className="flex flex-wrap items-center justify-between gap-3 py-3"
+              >
                 <div>
                   <p className="text-sm font-medium text-ink">{productName}</p>
                   {attrs && <p className="text-xs text-ink/50">{attrs}</p>}
@@ -102,17 +117,26 @@ export function OrderDetailPage() {
                           className="flex items-center gap-2 text-xs text-ink/60 hover:text-gold-dark"
                         >
                           <StarRatingDisplay value={myReview.reviews} size={12} />
-                          {myReview.is_authorized ? "Sua avaliação" : "Aguardando moderação"} · editar
+                          {myReview.is_authorized
+                            ? "Sua avaliação"
+                            : "Aguardando moderação"}{" "}
+                          · editar
                         </button>
                       ) : (
-                        <Button variant="outline" size="sm" onClick={() => setReviewingItemId(item.order_item_id)}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setReviewingItemId(item.order_item_id)}
+                        >
                           Avaliar produto
                         </Button>
                       )}
                     </div>
                   )}
                 </div>
-                <span className="text-sm font-medium text-ink">{formatCurrency(item.subtotal)}</span>
+                <span className="text-sm font-medium text-ink">
+                  {formatCurrency(item.subtotal)}
+                </span>
 
                 {reviewingItemId === item.order_item_id && (
                   <ReviewFormModal
@@ -148,10 +172,12 @@ export function OrderDetailPage() {
         <section className="rounded-xl border border-black/10 p-6">
           <h3 className="mb-2 font-display text-base text-ink">Endereço de entrega</h3>
           <p className="text-sm text-ink/70">
-            {addressQuery.data.street}, {addressQuery.data.number} — {addressQuery.data.neighborhood}
+            {addressQuery.data.street}, {addressQuery.data.number} —{" "}
+            {addressQuery.data.neighborhood}
           </p>
           <p className="text-sm text-ink/70">
-            {addressQuery.data.city}/{addressQuery.data.state} — CEP {addressQuery.data.cep}
+            {addressQuery.data.city}/{addressQuery.data.state} — CEP{" "}
+            {addressQuery.data.cep}
           </p>
         </section>
       )}
@@ -159,13 +185,17 @@ export function OrderDetailPage() {
       {latestPayment && (
         <section className="rounded-xl border border-black/10 p-6">
           <h3 className="mb-2 font-display text-base text-ink">Pagamento</h3>
-          <p className="text-sm text-ink/70">{BILLING_TYPE_LABELS[latestPayment.billing_type]}</p>
+          <p className="text-sm text-ink/70">
+            {BILLING_TYPE_LABELS[latestPayment.billing_type]}
+          </p>
           <p className="text-sm text-ink/70">Status: {latestPayment.status}</p>
 
           {latestPayment.pix_copy_paste && (
             <div className="mt-3">
               <p className="mb-1 text-xs font-medium text-ink/60">Pix copia e cola</p>
-              <code className="block break-all rounded-md bg-black/5 p-3 text-xs">{latestPayment.pix_copy_paste}</code>
+              <code className="block break-all rounded-md bg-black/5 p-3 text-xs">
+                {latestPayment.pix_copy_paste}
+              </code>
             </div>
           )}
           {latestPayment.bank_slip_url && (

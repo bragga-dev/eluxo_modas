@@ -2,19 +2,21 @@ import { createContext, useCallback, useEffect, useMemo, useState, type ReactNod
 import * as authApi from "@/api/auth";
 import { setOnSessionExpired } from "@/api/client";
 import { getAccessToken } from "@/api/tokenStore";
-import type { ClientOut, LoginPayload, Me, RegisterPayload } from "@/types/user";
+import type { AdminProfile, ClientOut, LoginPayload, Me, RegisterPayload } from "@/types/user";
 import { ApiError } from "@/types/api";
 
 interface AuthContextValue {
   me: Me | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  isAdmin: boolean;
   login: (payload: LoginPayload) => Promise<void>;
   loginWithGoogle: (idToken: string) => Promise<void>;
   register: (payload: RegisterPayload) => Promise<void>;
   logout: () => Promise<void>;
   refreshMe: () => Promise<void>;
   applyClientUpdate: (client: ClientOut) => void;
+  applyAdminUpdate: (admin: AdminProfile) => void;
 }
 
 export const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -111,19 +113,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
   }, []);
 
+  const applyAdminUpdate = useCallback((admin: AdminProfile) => {
+    setMe((prev) => (prev ? { ...prev, admin } : prev));
+  }, []);
+
   const value = useMemo<AuthContextValue>(
     () => ({
       me,
       isLoading,
       isAuthenticated: Boolean(me) && Boolean(getAccessToken()),
+      isAdmin: me?.user.role === "admin",
       login,
       loginWithGoogle,
       register,
       logout,
       refreshMe,
       applyClientUpdate,
+      applyAdminUpdate,
     }),
-    [me, isLoading, login, loginWithGoogle, register, logout, refreshMe, applyClientUpdate]
+    [me, isLoading, login, loginWithGoogle, register, logout, refreshMe, applyClientUpdate, applyAdminUpdate]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

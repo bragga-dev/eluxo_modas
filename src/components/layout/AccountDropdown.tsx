@@ -13,7 +13,7 @@ function getClientDisplayName(me: ReturnType<typeof useAuth>["me"]): string {
 }
 
 export function AccountDropdown() {
-  const { isAuthenticated, me, logout } = useAuth();
+  const { isAuthenticated, isAdmin, me, logout } = useAuth();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -27,7 +27,8 @@ export function AccountDropdown() {
     navigate("/entrar");
   }
 
-  const displayName = isAuthenticated ? getClientDisplayName(me) : null;
+  const displayName = isAuthenticated ? (isAdmin ? me?.admin?.full_name || "Administrador" : getClientDisplayName(me)) : null;
+  const photoUrl = isAdmin ? me?.admin?.photo_url : me?.client?.photo_url;
 
   return (
     <div className="relative">
@@ -37,9 +38,9 @@ export function AccountDropdown() {
         aria-label="Minha conta"
         aria-expanded={isOpen}
       >
-        {isAuthenticated && me?.client?.photo_url ? (
+        {isAuthenticated && photoUrl ? (
           <img
-            src={me.client.photo_url}
+            src={photoUrl}
             alt="Foto de perfil"
             className="h-8 w-8 rounded-full object-cover ring-1 ring-black/10"
           />
@@ -53,45 +54,80 @@ export function AccountDropdown() {
           <div className="fixed inset-0 z-10" onClick={close} />
           <div className="absolute right-0 z-20 mt-2 w-64 rounded-lg border border-black/10 bg-white p-2 shadow-card">
             {isAuthenticated ? (
-              <>
-                <div className="flex items-center gap-3 px-3 py-2.5">
-                  {me?.client?.photo_url ? (
-                    <img
-                      src={me.client.photo_url}
-                      alt="Foto de perfil"
-                      className="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-black/10"
-                    />
-                  ) : (
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/5 text-ink">
-                      <UserIcon className="h-5 w-5" />
-                    </span>
-                  )}
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold text-ink">{displayName}</p>
-                    <p className="truncate text-xs text-ink/50">{me?.user.email}</p>
+              isAdmin ? (
+                <>
+                  <div className="flex items-center gap-3 px-3 py-2.5">
+                    {photoUrl ? (
+                      <img
+                        src={photoUrl}
+                        alt="Foto de perfil"
+                        className="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-black/10"
+                      />
+                    ) : (
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/5 text-ink">
+                        <UserIcon className="h-5 w-5" />
+                      </span>
+                    )}
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-ink">{displayName}</p>
+                      <p className="truncate text-xs text-ink/50">{me?.user.email}</p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="my-1 h-px bg-black/10" />
+                  <div className="my-1 h-px bg-black/10" />
 
-                <AccountMenuLink to="/minha-conta" label="Minha conta" onClick={close} />
-                <AccountMenuLink to="/minha-conta/pedidos" label="Meus pedidos" onClick={close} />
-                <AccountMenuLink to="/minha-conta/enderecos" label="Meus endereços" onClick={close} />
+                  <AccountMenuLink to="/admin" label="Painel administrativo" onClick={close} />
+                  <AccountMenuLink to="/admin/perfil" label="Meu perfil" onClick={close} />
 
-                <div className="my-1 h-px bg-black/10" />
+                  <div className="my-1 h-px bg-black/10" />
 
-                <AccountMenuLink to="/minha-conta/seguranca" label="Configurações" onClick={close} />
-                <button
-                  onClick={handleLogout}
-                  className="w-full rounded-md px-3 py-2 text-left text-sm text-ink hover:bg-black/5"
-                >
-                  Sair
-                </button>
-              </>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full rounded-md px-3 py-2 text-left text-sm text-ink hover:bg-black/5"
+                  >
+                    Sair
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center gap-3 px-3 py-2.5">
+                    {photoUrl ? (
+                      <img
+                        src={photoUrl}
+                        alt="Foto de perfil"
+                        className="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-black/10"
+                      />
+                    ) : (
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/5 text-ink">
+                        <UserIcon className="h-5 w-5" />
+                      </span>
+                    )}
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-ink">{displayName}</p>
+                      <p className="truncate text-xs text-ink/50">{me?.user.email}</p>
+                    </div>
+                  </div>
+
+                  <div className="my-1 h-px bg-black/10" />
+
+                  <AccountMenuLink to="/minha-conta" label="Minha conta" onClick={close} />
+                  <AccountMenuLink to="/minha-conta/pedidos" label="Meus pedidos" onClick={close} />
+                  <AccountMenuLink to="/minha-conta/enderecos" label="Meus endereços" onClick={close} />
+
+                  <div className="my-1 h-px bg-black/10" />
+
+                  <AccountMenuLink to="/minha-conta/seguranca" label="Configurações" onClick={close} />
+                  <button
+                    onClick={handleLogout}
+                    className="w-full rounded-md px-3 py-2 text-left text-sm text-ink hover:bg-black/5"
+                  >
+                    Sair
+                  </button>
+                </>
+              )
             ) : (
               <>
-                <AccountMenuLink to="/entrar" label="Entrar" onClick={close} />
-                <AccountMenuLink to="/cadastro" label="Criar conta" onClick={close} />
+                <AccountMenuLink to="/entrar" label="Login / Cadastro" onClick={close} />
               </>
             )}
           </div>

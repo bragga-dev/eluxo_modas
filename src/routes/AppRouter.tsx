@@ -2,7 +2,9 @@ import { Routes, Route } from "react-router-dom";
 import { MainLayout } from "@/layouts/MainLayout";
 import { AuthLayout } from "@/layouts/AuthLayout";
 import { AccountLayout } from "@/layouts/AccountLayout";
+import { AdminLayout } from "@/layouts/AdminLayout";
 import { ProtectedRoute } from "./ProtectedRoute";
+import { AdminRoute } from "./AdminRoute";
 
 import { HomePage } from "@/pages/HomePage";
 import { CatalogPage } from "@/pages/CatalogPage";
@@ -26,6 +28,12 @@ import { OrdersPage } from "@/pages/OrdersPage";
 import { OrderDetailPage } from "@/pages/OrderDetailPage";
 import { SecurityPage } from "@/pages/SecurityPage";
 
+import { AdminDashboardPage } from "@/pages/admin/AdminDashboardPage";
+import { AdminProfilePage } from "@/pages/admin/AdminProfilePage";
+import { AdminUsersPage } from "@/pages/admin/AdminUsersPage";
+import { AdminUserDetailPage } from "@/pages/admin/AdminUserDetailPage";
+import { AdminComingSoonPage } from "@/pages/admin/AdminComingSoonPage";
+
 export function AppRouter() {
   return (
     <Routes>
@@ -46,6 +54,20 @@ export function AppRouter() {
             <Route path="/minha-conta/pedidos" element={<OrdersPage />} />
             <Route path="/minha-conta/pedidos/:orderId" element={<OrderDetailPage />} />
             <Route path="/minha-conta/seguranca" element={<SecurityPage />} />
+          </Route>
+
+          <Route element={<AdminRoute />}>
+            <Route element={<AdminLayout />}>
+              <Route path="/admin" element={<AdminDashboardPage />} />
+              <Route path="/admin/perfil" element={<AdminProfilePage />} />
+              <Route path="/admin/usuarios" element={<AdminUsersPage />} />
+              <Route path="/admin/usuarios/:userId" element={<AdminUserDetailPage />} />
+              <Route path="/admin/produtos" element={<AdminComingSoonPage resource="produtos" />} />
+              <Route path="/admin/categorias" element={<AdminComingSoonPage resource="categorias" />} />
+              <Route path="/admin/pedidos" element={<AdminComingSoonPage resource="pedidos" />} />
+              <Route path="/admin/avaliacoes" element={<AdminComingSoonPage resource="avaliações" />} />
+              <Route path="/admin/site" element={<AdminComingSoonPage resource="conteúdo do site" />} />
+            </Route>
           </Route>
         </Route>
 

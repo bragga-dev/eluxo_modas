@@ -285,7 +285,7 @@ export function CheckoutPage() {
           )}
         </div>
 
-        <aside className="h-fit rounded-xl border border-black/10 p-6">
+        <aside className="h-fit bg-cream/60 p-6">
           <h2 className="mb-4 font-display text-lg text-ink">Resumo do Pedido</h2>
           <ul className="mb-4 flex flex-col gap-2 text-sm text-ink/70">
             {cart.items.map((item) => (

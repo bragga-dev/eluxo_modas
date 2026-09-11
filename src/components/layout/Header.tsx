@@ -5,6 +5,7 @@ import { MobileMenu } from "./MobileMenu";
 import { SearchBar } from "./SearchBar";
 import { BagIcon, MenuIcon } from "@/components/ui/Icons";
 import { useState } from "react";
+import logo from "@/assets/logo.jpeg";
 
 const NAV_LINKS = [
   { label: "Início", to: "/" },
@@ -31,8 +32,11 @@ export function Header() {
           <MenuIcon className="h-6 w-6" />
         </button>
 
-        <Link to="/" className="font-display text-xl tracking-wide text-ink sm:text-2xl">
-          ÉLUXO <span className="text-gold-dark">MODAS</span>
+        <Link to="/" className="flex items-center gap-2">
+          <img src={logo} alt="Éluxo Modas" className="h-11 w-11 rounded-full object-cover sm:h-12 sm:w-12" />
+          <span className="hidden font-display text-xl tracking-wide text-ink sm:inline sm:text-2xl">
+            ÉLUXO <span className="text-gold-dark">MODAS</span>
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-5 lg:flex xl:gap-6">

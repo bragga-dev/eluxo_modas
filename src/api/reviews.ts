@@ -8,7 +8,7 @@ import type {
 } from "@/types/review";
 
 export async function createReview(payload: ReviewCreatePayload): Promise<ReviewPrivate> {
-  const { data } = await http.post<ReviewPrivate>("/reviews", payload);
+  const { data } = await http.post<ReviewPrivate>("/reviews/", payload);
   return data;
 }
 

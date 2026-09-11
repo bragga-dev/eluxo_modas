@@ -52,10 +52,21 @@ export function ProductCard({ product, rating }: ProductCardProps) {
 
       <Link
         to={`/produtos/${product.product_id}`}
-        onClick={() => rememberProduct(product)}
-        className="mt-auto block w-full rounded-lg bg-gold py-2 text-center text-sm font-semibold text-white transition-colors hover:bg-gold-dark"
+        onClick={(e) => {
+          if (!product.in_stock) {
+            e.preventDefault();
+            return;
+          }
+          rememberProduct(product);
+        }}
+        aria-disabled={!product.in_stock}
+        className={`mt-auto block w-full rounded-full py-2 text-center text-sm font-semibold transition-colors ${
+          product.in_stock
+            ? "bg-gold text-white hover:bg-gold-dark"
+            : "cursor-not-allowed bg-ink/10 text-ink/40"
+        }`}
       >
-        Comprar
+        {product.in_stock ? "Comprar" : "Esgotado"}
       </Link>
     </div>
   );

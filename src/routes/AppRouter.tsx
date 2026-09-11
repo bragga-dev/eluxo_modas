@@ -34,7 +34,6 @@ export function AppRouter() {
         <Route path="/produtos" element={<CatalogPage />} />
         <Route path="/produtos/:productId" element={<ProductDetailPage />} />
         <Route path="/categorias" element={<CategoriesPage />} />
-        <Route path="/carrinho" element={<CartPage />} />
         <Route path="/contato" element={<ContactPage />} />
         <Route path="/sobre" element={<AboutPage />} />
 
@@ -42,6 +41,7 @@ export function AppRouter() {
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route element={<AccountLayout />}>
             <Route path="/minha-conta" element={<AccountPage />} />
+            <Route path="/minha-conta/sacola" element={<CartPage />} />
             <Route path="/minha-conta/enderecos" element={<AddressesPage />} />
             <Route path="/minha-conta/pedidos" element={<OrdersPage />} />
             <Route path="/minha-conta/pedidos/:orderId" element={<OrderDetailPage />} />

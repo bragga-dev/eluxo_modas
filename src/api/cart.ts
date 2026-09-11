@@ -2,12 +2,12 @@ import { http } from "./client";
 import type { Cart, CartItemCreatePayload, CartItemUpdatePayload } from "@/types/cart";
 
 export async function getMyCart(): Promise<Cart> {
-  const { data } = await http.get<Cart>("/cart");
+  const { data } = await http.get<Cart>("/cart/");
   return data;
 }
 
 export async function clearMyCart(): Promise<Cart> {
-  const { data } = await http.delete<Cart>("/cart");
+  const { data } = await http.delete<Cart>("/cart/");
   return data;
 }
 

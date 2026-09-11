@@ -55,10 +55,11 @@ export function AccountPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 rounded-xl border border-black/10 p-6">
-        <h2 className="font-display text-lg text-ink">Informações pessoais</h2>
-
-        <p className="text-sm text-ink/60">{me?.user.email}</p>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5 border-t border-black/8 pt-8">
+        <div>
+          <h2 className="font-display text-xl text-ink">Informações pessoais</h2>
+          <p className="mt-1 text-sm text-ink/50">{me?.user.email}</p>
+        </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Input

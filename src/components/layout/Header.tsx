@@ -1,11 +1,10 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/hooks/useCart";
-import { CartDrawer } from "./CartDrawer";
+import { AccountDropdown } from "./AccountDropdown";
 import { MobileMenu } from "./MobileMenu";
 import { SearchBar } from "./SearchBar";
-import { AccountDropdown } from "./AccountDropdown";
 import { BagIcon, MenuIcon } from "@/components/ui/Icons";
+import { useState } from "react";
 
 const NAV_LINKS = [
   { label: "Início", to: "/" },
@@ -19,7 +18,6 @@ const NAV_LINKS = [
 
 export function Header() {
   const { itemCount } = useCart();
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -50,10 +48,10 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-1 sm:gap-2">
-          <button
-            onClick={() => setIsCartOpen(true)}
+          <Link
+            to="/minha-conta/sacola"
             className="relative p-2 text-ink hover:text-gold-dark"
-            aria-label="Abrir sacola"
+            aria-label="Ir para minha sacola"
           >
             <BagIcon className="h-6 w-6" />
             {itemCount > 0 && (
@@ -61,7 +59,7 @@ export function Header() {
                 {itemCount > 9 ? "9+" : itemCount}
               </span>
             )}
-          </button>
+          </Link>
 
           <AccountDropdown />
         </div>
@@ -71,7 +69,6 @@ export function Header() {
         <SearchBar />
       </div>
 
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
       <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} links={NAV_LINKS} />
     </header>
   );

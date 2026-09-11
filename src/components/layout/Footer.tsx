@@ -7,7 +7,7 @@ export function Footer() {
     <footer className="mt-20 bg-ink text-cream/80">
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-4 py-12 sm:grid-cols-2 sm:px-6 md:grid-cols-4 lg:px-8">
         <div>
-          <span className="font-display text-xl text-white">Éluxo Modas</span>
+          <span className="font-display text-xl text-white">ÉLUXO MODAS</span>
           <p className="mt-3 text-sm text-cream/60">Feminina e masculina — mais que moda, é estilo de vida.</p>
         </div>
 

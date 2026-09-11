@@ -40,9 +40,9 @@ export function AccountAvatarCard() {
   const fullName = [me?.client?.first_name, me?.client?.last_name].filter(Boolean).join(" ");
 
   return (
-    <div className="flex flex-col items-center gap-3 rounded-xl border border-black/10 bg-white p-6 text-center">
+    <div className="flex flex-col items-center gap-3 border-b border-black/8 pb-6 text-center">
       <div className="relative h-24 w-24">
-        <div className="h-24 w-24 overflow-hidden rounded-full bg-cream">
+        <div className="h-24 w-24 overflow-hidden rounded-full bg-cream ring-1 ring-black/5">
           {me?.client?.photo_url ? (
             <img src={me.client.photo_url} alt="Foto de perfil" className="h-full w-full object-cover" />
           ) : (
@@ -62,7 +62,7 @@ export function AccountAvatarCard() {
       </div>
 
       {fullName && <p className="font-display text-lg text-ink">{fullName}</p>}
-      {me?.user.email && <p className="text-sm text-ink/60">{me.user.email}</p>}
+      {me?.user.email && <p className="text-sm text-ink/50">{me.user.email}</p>}
 
       <input
         ref={fileInputRef}

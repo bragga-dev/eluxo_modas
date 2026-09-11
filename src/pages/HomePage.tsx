@@ -5,6 +5,7 @@ import { listCategories } from "@/api/categories";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { CategoryCard } from "@/components/category/CategoryCard";
 import { HeroCarousel } from "@/components/home/HeroCarousel";
+import { StoreLocationMap } from "@/components/home/StoreLocationMap";
 import { ErrorState } from "@/components/ui/StatusStates";
 import { Skeleton } from "@/components/ui/Skeleton";
 import type { Banner } from "@/types/banner";
@@ -101,6 +102,8 @@ export function HomePage() {
           </div>
         )}
       </section>
+
+      <StoreLocationMap />
     </div>
   );
 }

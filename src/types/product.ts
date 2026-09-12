@@ -109,3 +109,63 @@ export interface ProductListFilters {
   color?: ProductColor;
   in_stock_only?: boolean;
 }
+
+/** Filtros aceitos por GET /products/admin/list (inclui inativos). */
+export interface ProductListAdminFilters extends ProductListFilters {
+  active_only?: boolean;
+}
+
+export const PRODUCT_SIZE_OPTIONS: ProductSize[] = [
+  "PP", "P", "M", "G", "GG", "XGG",
+  "G1", "G2", "G3", "G4", "G5", "G6",
+  "34", "36", "38", "40", "42", "44", "46", "48", "50", "52", "54", "56", "58", "60", "62", "64",
+];
+
+export const PRODUCT_GENDER_OPTIONS: ProductGender[] = ["masculino", "feminino", "unissex"];
+
+export const PRODUCT_COLOR_OPTIONS = Object.keys(PRODUCT_COLOR_LABELS) as ProductColor[];
+
+/** Espelha VariantCreateIn (products/schemas/product_variant_schema.py). */
+export interface VariantCreatePayload {
+  size?: ProductSize | null;
+  color?: ProductColor | null;
+  gender?: ProductGender | null;
+  price: string;
+  stock: number;
+  description: string;
+}
+
+/** Espelha VariantUpdateIn. */
+export interface VariantUpdatePayload {
+  size?: ProductSize | null;
+  color?: ProductColor | null;
+  gender?: ProductGender | null;
+  price?: string;
+  stock?: number;
+  description?: string;
+  is_active?: boolean;
+}
+
+/** Espelha ShippingCreateIn (products/schemas/product_shipping_schema.py). */
+export interface ShippingCreatePayload {
+  weight: string;
+  height: string;
+  width: string;
+  length: string;
+  quantity: number;
+}
+
+/** Espelha ProductCreateFullIn — payload (JSON) enviado no campo `payload` do multipart. */
+export interface ProductCreateFullPayload {
+  product_name: string;
+  product_category_id: string;
+  variant: VariantCreatePayload;
+  shipping: ShippingCreatePayload;
+}
+
+/** Espelha ProductUpdateIn. */
+export interface ProductUpdatePayload {
+  product_name?: string;
+  product_category_id?: string;
+  is_active?: boolean;
+}

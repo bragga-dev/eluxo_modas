@@ -4,12 +4,14 @@ import { AdminAvatarCard } from "@/components/admin/AdminAvatarCard";
 const ADMIN_LINKS = [
   { label: "Painel", to: "/admin" },
   { label: "Meu perfil", to: "/admin/perfil" },
+  { label: "Segurança", to: "/admin/seguranca" },
   { label: "Usuários", to: "/admin/usuarios" },
   { label: "Produtos", to: "/admin/produtos" },
   { label: "Categorias", to: "/admin/categorias" },
   { label: "Pedidos", to: "/admin/pedidos" },
   { label: "Avaliações", to: "/admin/avaliacoes" },
   { label: "Site", to: "/admin/site" },
+  { label: "Campanhas", to: "/admin/campanhas" },
 ];
 
 export function AdminLayout() {

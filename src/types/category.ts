@@ -5,3 +5,14 @@ export interface Category {
   category_image_url: string;
   is_active: boolean;
 }
+
+/** Espelha ProductCategoryCreateIn. */
+export interface CategoryCreatePayload {
+  category_name: string;
+}
+
+/** Espelha ProductCategoryUpdateIn. */
+export interface CategoryUpdatePayload {
+  category_name?: string;
+  is_active?: boolean;
+}

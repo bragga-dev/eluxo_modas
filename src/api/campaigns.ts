@@ -9,7 +9,7 @@ import type {
 
 /** GET /campaigns — paginado. Admin usa active_only=false para ver todas. */
 export async function listCampaigns(page = 1, pageSize = 20, activeOnly = false): Promise<Page<Campaign>> {
-  const { data } = await http.get<Page<Campaign>>("/campaigns", {
+  const { data } = await http.get<Page<Campaign>>("/campaigns/", {
     params: { page, page_size: pageSize, active_only: activeOnly },
   });
   return data;
@@ -21,7 +21,7 @@ export async function getCampaign(campaignId: string): Promise<Campaign> {
 }
 
 export async function createCampaign(payload: CampaignCreatePayload): Promise<Campaign> {
-  const { data } = await http.post<Campaign>("/campaigns", payload);
+  const { data } = await http.post<Campaign>("/campaigns/", payload);
   return data;
 }
 

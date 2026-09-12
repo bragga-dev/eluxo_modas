@@ -8,44 +8,11 @@ import { HeroCarousel } from "@/components/home/HeroCarousel";
 import { StoreLocationMap } from "@/components/home/StoreLocationMap";
 import { ErrorState } from "@/components/ui/StatusStates";
 import { Skeleton } from "@/components/ui/Skeleton";
-import type { Banner } from "@/types/banner";
-
-/**
- * MOCK TEMPORÁRIO — sem model/endpoint de banner no backend ainda (ver
- * types/banner.ts). Quando o model existir, troque isso por um
- * useQuery(["banners"], () => listBanners()) e apague esse array.
- */
-const HOME_CAROUSEL_SLIDES: Banner[] = [
-  {
-    banner_id: "mock-1",
-    image_url: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1600",
-    title: "Estilo que valoriza você",
-    subtitle: "Moda feminina e masculina com qualidade, sofisticação e autenticidade.",
-    cta_label: "Ver produtos",
-    cta_url: "/produtos",
-    display_order: 1,
-  },
-  {
-    banner_id: "mock-2",
-    image_url: "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=1600",
-    title: "Coleção Feminina",
-    subtitle: "Elegância em todos os momentos.",
-    cta_label: "Ver coleção",
-    cta_url: "/produtos?genero=feminino",
-    display_order: 2,
-  },
-  {
-    banner_id: "mock-3",
-    image_url: "https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?q=80&w=1600",
-    title: "Coleção Masculina",
-    subtitle: "Estilo e atitude em cada detalhe.",
-    cta_label: "Ver coleção",
-    cta_url: "/produtos?genero=masculino",
-    display_order: 3,
-  },
-];
+import { useHomeCampaignBanners } from "@/hooks/useHomeCampaignBanners";
 
 export function HomePage() {
+  const { banners, isLoading: bannersLoading } = useHomeCampaignBanners();
+
   const featuredQuery = useQuery({
     queryKey: ["products", "home-featured"],
     queryFn: () => listProducts({ page: 1, page_size: 8, in_stock_only: true }),
@@ -59,7 +26,11 @@ export function HomePage() {
   return (
     <div>
       <section className="bg-cream">
-        <HeroCarousel banners={HOME_CAROUSEL_SLIDES} />
+        {bannersLoading ? (
+          <Skeleton className="aspect-[16/9] w-full sm:aspect-[21/9]" />
+        ) : (
+          <HeroCarousel banners={banners} />
+        )}
 
         <div className="mt-6 border-t border-black/5 bg-white/60">
           <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-6 text-center text-xs text-ink/70 sm:grid-cols-4 sm:px-6 lg:px-8">

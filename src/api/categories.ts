@@ -4,7 +4,7 @@ import type { Category, CategoryCreatePayload, CategoryUpdatePayload } from "@/t
 
 /** GET /categories — lista pública paginada (usada no menu e nos filtros). */
 export async function listCategories(page = 1, pageSize = 50): Promise<Page<Category>> {
-  const { data } = await http.get<Page<Category>>("/categories", {
+  const { data } = await http.get<Page<Category>>("/categories/", {
     params: { page, page_size: pageSize, active_only: true },
   });
   return data;
@@ -20,14 +20,14 @@ export async function getCategory(categoryId: string): Promise<Category> {
 
 /** GET /categories — admin, inclui inativas. */
 export async function listCategoriesAdmin(page = 1, pageSize = 50): Promise<Page<Category>> {
-  const { data } = await http.get<Page<Category>>("/categories", {
+  const { data } = await http.get<Page<Category>>("/categories/", {
     params: { page, page_size: pageSize, active_only: false },
   });
   return data;
 }
 
 export async function createCategory(payload: CategoryCreatePayload): Promise<Category> {
-  const { data } = await http.post<Category>("/categories", payload);
+  const { data } = await http.post<Category>("/categories/", payload);
   return data;
 }
 

@@ -28,7 +28,7 @@ function buildParams(filters: ProductListFilters): Record<string, string | numbe
 
 /** GET /products — vitrine pública, paginada. */
 export async function listProducts(filters: ProductListFilters = {}): Promise<Page<ProductListItem>> {
-  const { data } = await http.get<Page<ProductListItem>>("/products", {
+  const { data } = await http.get<Page<ProductListItem>>("/products/", {
     params: buildParams(filters),
   });
   return data;

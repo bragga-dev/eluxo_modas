@@ -16,7 +16,6 @@ export function CategoryCard({ category }: { category: Category }) {
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
       <div className="relative z-10 flex w-full items-center justify-between p-5">
         <span className="font-display text-xl text-white">{category.category_name}</span>
-        <span className="text-sm text-white/90 underline-offset-2 group-hover:underline">Ver coleção →</span>
       </div>
     </Link>
   );

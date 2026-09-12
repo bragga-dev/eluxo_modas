@@ -33,13 +33,12 @@ import { AdminProfilePage } from "@/pages/admin/AdminProfilePage";
 import { AdminSecurityPage } from "@/pages/admin/AdminSecurityPage";
 import { AdminUsersPage } from "@/pages/admin/AdminUsersPage";
 import { AdminUserDetailPage } from "@/pages/admin/AdminUserDetailPage";
-import { AdminComingSoonPage } from "@/pages/admin/AdminComingSoonPage";
-
 import { AdminProductsPage } from "@/pages/admin/AdminProductsPage";
 import { AdminProductFormPage } from "@/pages/admin/AdminProductFormPage";
 import { AdminCategoriesPage } from "@/pages/admin/AdminCategoriesPage";
 import { AdminCampaignsPage } from "@/pages/admin/AdminCampaignsPage";
 import { AdminCampaignFormPage } from "@/pages/admin/AdminCampaignFormPage";
+import { AdminComingSoonPage } from "@/pages/admin/AdminComingSoonPage";
 
 export function AppRouter() {
   return (
@@ -70,11 +69,6 @@ export function AppRouter() {
               <Route path="/admin/seguranca" element={<AdminSecurityPage />} />
               <Route path="/admin/usuarios" element={<AdminUsersPage />} />
               <Route path="/admin/usuarios/:userId" element={<AdminUserDetailPage />} />
-              <Route path="/admin/produtos" element={<AdminComingSoonPage resource="produtos" />} />
-              <Route path="/admin/categorias" element={<AdminComingSoonPage resource="categorias" />} />
-              <Route path="/admin/pedidos" element={<AdminComingSoonPage resource="pedidos" />} />
-              <Route path="/admin/avaliacoes" element={<AdminComingSoonPage resource="avaliações" />} />
-              <Route path="/admin/site" element={<AdminComingSoonPage resource="conteúdo do site" />} />
               <Route path="/admin/produtos" element={<AdminProductsPage />} />
               <Route path="/admin/produtos/novo" element={<AdminProductFormPage />} />
               <Route path="/admin/produtos/:productId" element={<AdminProductFormPage />} />
@@ -82,6 +76,9 @@ export function AppRouter() {
               <Route path="/admin/campanhas" element={<AdminCampaignsPage />} />
               <Route path="/admin/campanhas/nova" element={<AdminCampaignFormPage />} />
               <Route path="/admin/campanhas/:campaignId" element={<AdminCampaignFormPage />} />
+              <Route path="/admin/pedidos" element={<AdminComingSoonPage resource="pedidos" />} />
+              <Route path="/admin/avaliacoes" element={<AdminComingSoonPage resource="avaliações" />} />
+              <Route path="/admin/site" element={<AdminComingSoonPage resource="conteúdo do site" />} />
             </Route>
           </Route>
         </Route>

@@ -16,25 +16,33 @@ interface ImageGalleryManagerProps {
 }
 
 /**
- * Galeria simples de imagens com upload, exclusão e "definir como capa".
- * Reordenação fica de fora por ora — os endpoints de reorder existem na API
- * (products/images/{id}/reorder e campaigns/images/{id}/reorder) mas o
- * drag-and-drop de UI é um incremento futuro, não bloqueia o CRUD.
+ * Galeria simples de imagens com upload (múltiplos arquivos de uma vez),
+ * exclusão e "definir como capa". Reordenação fica de fora por ora — os
+ * endpoints de reorder existem na API (products/images/{id}/reorder e
+ * campaigns/images/{id}/reorder) mas o drag-and-drop de UI é um incremento
+ * futuro, não bloqueia o CRUD.
  */
 export function ImageGalleryManager({ images, onUpload, onDelete, onSetCover, disabled }: ImageGalleryManagerProps) {
-  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<{ done: number; total: number } | null>(null);
   const [pendingId, setPendingId] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
+    const files = Array.from(event.target.files ?? []);
     event.target.value = "";
-    if (!file) return;
-    setIsUploading(true);
+    if (files.length === 0) return;
+
+    setUploadProgress({ done: 0, total: files.length });
     try {
-      await onUpload(file);
+      // Sequencial de propósito: cada upload dispara invalidação/refetch da
+      // galeria — em paralelo, uploads concorrentes podem se sobrescrever
+      // na definição de "capa" quando a lista ainda está vazia.
+      for (let i = 0; i < files.length; i++) {
+        await onUpload(files[i]);
+        setUploadProgress({ done: i + 1, total: files.length });
+      }
     } finally {
-      setIsUploading(false);
+      setUploadProgress(null);
     }
   }
 
@@ -55,6 +63,8 @@ export function ImageGalleryManager({ images, onUpload, onDelete, onSetCover, di
       setPendingId(null);
     }
   }
+
+  const isUploading = uploadProgress !== null;
 
   return (
     <div className="flex flex-col gap-4">
@@ -102,11 +112,18 @@ export function ImageGalleryManager({ images, onUpload, onDelete, onSetCover, di
           className="flex aspect-square flex-col items-center justify-center gap-1.5 rounded-lg border border-dashed border-black/20 text-xs text-ink/50 transition-colors hover:border-gold hover:text-gold-dark disabled:opacity-60"
         >
           <span className="text-2xl leading-none">+</span>
-          {isUploading ? "Enviando…" : "Adicionar imagem"}
+          {isUploading ? `Enviando ${uploadProgress!.done}/${uploadProgress!.total}…` : "Adicionar imagens"}
         </button>
       </div>
 
-      <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        className="hidden"
+        onChange={handleFileChange}
+      />
 
       {images.length === 0 && (
         <p className="text-xs text-ink/50">Nenhuma imagem ainda. A primeira imagem enviada vira a capa.</p>
@@ -119,26 +136,32 @@ export function ImageGalleryManager({ images, onUpload, onDelete, onSetCover, di
 export function UploadImageButton({
   onUpload,
   disabled,
-  label = "Adicionar imagem",
+  label = "Adicionar imagens",
 }: {
   onUpload: (file: File) => Promise<unknown>;
   disabled?: boolean;
   label?: string;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<{ done: number; total: number } | null>(null);
 
   async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
+    const files = Array.from(event.target.files ?? []);
     event.target.value = "";
-    if (!file) return;
-    setIsUploading(true);
+    if (files.length === 0) return;
+
+    setUploadProgress({ done: 0, total: files.length });
     try {
-      await onUpload(file);
+      for (let i = 0; i < files.length; i++) {
+        await onUpload(files[i]);
+        setUploadProgress({ done: i + 1, total: files.length });
+      }
     } finally {
-      setIsUploading(false);
+      setUploadProgress(null);
     }
   }
+
+  const isUploading = uploadProgress !== null;
 
   return (
     <>
@@ -150,9 +173,9 @@ export function UploadImageButton({
         isLoading={isUploading}
         onClick={() => inputRef.current?.click()}
       >
-        {label}
+        {isUploading ? `Enviando ${uploadProgress!.done}/${uploadProgress!.total}…` : label}
       </Button>
-      <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+      <input ref={inputRef} type="file" accept="image/*" multiple className="hidden" onChange={handleFileChange} />
     </>
   );
 }

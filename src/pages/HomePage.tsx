@@ -34,7 +34,7 @@ export function HomePage() {
 
         <div className="mt-6 border-t border-black/5 bg-white/60">
           <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-6 text-center text-xs text-ink/70 sm:grid-cols-4 sm:px-6 lg:px-8">
-            <span>Frete grátis acima de R$ 299</span>
+            <span>Entregamos em todo Brasil</span>
             <span>Compra segura</span>
             <span>Parcele em até 12x</span>
             <span>Atendimento especializado</span>

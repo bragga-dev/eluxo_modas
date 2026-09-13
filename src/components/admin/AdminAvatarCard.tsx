@@ -38,13 +38,13 @@ export function AdminAvatarCard() {
   const isBusy = photoMutation.isPending || removePhotoMutation.isPending;
 
   return (
-    <div className="flex flex-col items-center gap-3 border-b border-black/8 pb-6 text-center">
+    <div className="flex flex-col items-center gap-3 pb-2 text-center">
       <div className="relative h-24 w-24">
-        <div className="h-24 w-24 overflow-hidden rounded-full bg-cream ring-1 ring-black/5">
+        <div className="h-24 w-24 overflow-hidden rounded-full bg-cream ring-2 ring-gold/20">
           {me?.admin?.photo_url ? (
             <img src={me.admin.photo_url} alt="Foto de perfil" className="h-full w-full object-cover" />
           ) : (
-            <div className="flex h-full w-full items-center justify-center text-2xl text-ink/30">
+            <div className="flex h-full w-full items-center justify-center font-display text-2xl text-ink/30">
               {me?.user.email.charAt(0).toUpperCase()}
             </div>
           )}
@@ -59,8 +59,10 @@ export function AdminAvatarCard() {
         </button>
       </div>
 
-      {me?.admin?.full_name && <p className="font-display text-lg text-ink">{me.admin.full_name}</p>}
-      {me?.user.email && <p className="text-sm text-ink/50">{me.user.email}</p>}
+      <div className="flex flex-col gap-0.5">
+        <p className="font-display text-lg leading-tight text-ink">{me?.admin?.full_name || "Administrador"}</p>
+        {me?.user.email && <p className="text-sm text-ink/50">{me.user.email}</p>}
+      </div>
 
       <input
         ref={fileInputRef}

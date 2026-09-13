@@ -28,5 +28,5 @@ export function HeroCarousel({ banners }: { banners: Banner[] }) {
     </div>
   ));
 
-  return <Carousel slides={slides} ariaLabel="Destaques Éluxo Modas" className="" />;
+  return <Carousel slides={slides} ariaLabel="Destaques ÉLUXO MODAS" className="" />;
 }

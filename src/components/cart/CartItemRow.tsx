@@ -33,7 +33,7 @@ export function CartItemRow({ item, onQuantityChange, onRemove, isUpdating }: Ca
           <img src={cached.imageUrl} alt={cached.productName} className="h-full w-full object-cover" />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-[10px] text-ink/30">
-            Éluxo Modas
+            ÉLUXO MODAS
           </div>
         )}
       </Link>

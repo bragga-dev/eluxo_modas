@@ -15,7 +15,7 @@ export function StoreLocationMap() {
           allowFullScreen
           loading="lazy"
           referrerPolicy="strict-origin-when-cross-origin"
-          title="Localização da Éluxo Modas"
+          title="Localização da ÉLUXO MODAS"
         />
       </div>
     </section>

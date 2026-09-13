@@ -22,7 +22,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-10 border-b border-white/10 pb-10 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <span className="font-display text-2xl text-white">Éluxo Modas</span>
+            <span className="font-display text-2xl text-white">ÉLUXO MODAS</span>
             <p className="mt-2 max-w-xs text-sm text-cream/60">
               Feminina e masculina — mais que moda, é estilo de vida.
             </p>

@@ -11,7 +11,7 @@ import {
   TagIcon,
   PackageIcon,
   StarIcon,
-  GlobeIcon,
+  MailIcon,
   MegaphoneIcon,
   LogOutIcon,
 } from "@/components/ui/Icons";
@@ -59,7 +59,7 @@ const ADMIN_NAV_GROUPS: AdminNavGroup[] = [
     label: "Conteúdo",
     links: [
       { label: "Campanhas", to: "/admin/campanhas", icon: MegaphoneIcon },
-      { label: "Site", to: "/admin/site", icon: GlobeIcon },
+      { label: "Mensagens", to: "/admin/mensagens", icon: MailIcon },
     ],
   },
 ];

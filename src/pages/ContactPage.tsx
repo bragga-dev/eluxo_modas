@@ -1,31 +1,53 @@
 import { useState, type FormEvent } from "react";
+import { sendContactMessage } from "@/api/contact";
 import { Input } from "@/components/ui/Input";
+import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
+import { useToast } from "@/hooks/useToast";
+import { ApiError } from "@/types/api";
 
 const CONTACT_EMAIL = "contato@eluxomodas.com.br";
 
-/**
- * LIMITAÇÃO REAL DA API: o backend não expõe nenhum endpoint de contato
- * (não existe router registrado em config/api.py para isso — só há um
- * arquivo de exceção não utilizado em core/exceptions). Por isso este
- * formulário não faz POST para nenhum lugar: ele monta um link `mailto:`
- * com os dados preenchidos, em vez de fingir que existe uma API de envio.
- * Se o backend ganhar um endpoint de contato no futuro, é só trocar o
- * `handleSubmit` por uma chamada em api/contact.ts.
- */
 export function ContactPage() {
+  const { showToast } = useToast();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [sent, setSent] = useState(false);
 
-  function handleSubmit(event: FormEvent) {
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    const body = encodeURIComponent(`Nome: ${name}\nE-mail: ${email}\nTelefone: ${phone}\n\n${message}`);
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-      "Contato via site — ÉLUXO MODAS"
-    )}&body=${body}`;
+    setFieldErrors({});
+    setIsSubmitting(true);
+    try {
+      await sendContactMessage({
+        full_name: name,
+        subject,
+        message,
+        email,
+        phone,
+      });
+      setSent(true);
+      setName("");
+      setEmail("");
+      setPhone("");
+      setSubject("");
+      setMessage("");
+    } catch (err) {
+      if (err instanceof ApiError) {
+        showToast(err.detail, "error");
+        setFieldErrors(err.fieldErrors ?? {});
+      } else {
+        showToast("Não foi possível enviar sua mensagem agora.", "error");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -34,27 +56,58 @@ export function ContactPage() {
       <h1 className="mt-3 mb-2 font-display text-3xl text-ink">Fale Conosco</h1>
       <p className="mb-8 text-sm text-ink/60">Estamos prontos para te atender.</p>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <Input label="Nome" required value={name} onChange={(e) => setName(e.target.value)} />
-        <Input label="E-mail" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
-        <Input label="Telefone" value={phone} onChange={(e) => setPhone(e.target.value)} />
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="message" className="text-sm font-medium text-ink">
-            Mensagem <span className="text-red-600">*</span>
-          </label>
-          <textarea
-            id="message"
+      {sent ? (
+        <div className="rounded-xl border border-black/10 bg-cream/40 px-6 py-8 text-center">
+          <h2 className="mb-2 font-display text-xl text-ink">Mensagem enviada!</h2>
+          <p className="text-sm text-ink/60">Obrigado pelo contato. Nossa equipe vai responder em breve.</p>
+          <Button className="mt-6" variant="outline" onClick={() => setSent(false)}>
+            Enviar outra mensagem
+          </Button>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <Input
+            label="Nome"
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            error={fieldErrors.full_name}
+          />
+          <Input
+            label="E-mail"
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            error={fieldErrors.email}
+          />
+          <Input
+            label="Telefone"
+            required
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            error={fieldErrors.phone}
+          />
+          <Input
+            label="Assunto"
+            required
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            error={fieldErrors.subject}
+          />
+          <Textarea
+            label="Mensagem"
             required
             rows={5}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="rounded-lg border border-black/15 px-4 py-2.5 text-sm outline-none focus:border-gold focus:ring-1 focus:ring-gold"
+            error={fieldErrors.message}
           />
-        </div>
-        <Button type="submit" size="lg" className="self-start">
-          Enviar mensagem
-        </Button>
-      </form>
+          <Button type="submit" size="lg" className="self-start" isLoading={isSubmitting}>
+            Enviar mensagem
+          </Button>
+        </form>
+      )}
 
       <div className="mt-10 border-t border-black/10 pt-6 text-sm text-ink/60">
         <p>E-mail: {CONTACT_EMAIL}</p>

@@ -47,3 +47,34 @@ export async function listOrderItemReviews(orderItemId: string): Promise<Review[
   const { data } = await http.get<Review[]>(`/reviews/order-items/${orderItemId}`);
   return data;
 }
+
+// ── Moderação (admin) ────────────────────────────────────────────────────────
+
+/** GET /reviews/admin/pending — [Admin] avaliações aguardando moderação. */
+export async function listPendingReviewsAdmin(): Promise<ReviewPrivate[]> {
+  const { data } = await http.get<ReviewPrivate[]>("/reviews/admin/pending");
+  return data;
+}
+
+/** GET /reviews/admin/authorized — [Admin] avaliações já autorizadas. */
+export async function listAuthorizedReviewsAdmin(): Promise<ReviewPrivate[]> {
+  const { data } = await http.get<ReviewPrivate[]>("/reviews/admin/authorized");
+  return data;
+}
+
+/** POST /reviews/admin/{id}/authorize — [Admin] autoriza a exibição pública. */
+export async function authorizeReviewAdmin(reviewId: string): Promise<ReviewPrivate> {
+  const { data } = await http.post<ReviewPrivate>(`/reviews/admin/${reviewId}/authorize`);
+  return data;
+}
+
+/** POST /reviews/admin/{id}/revoke — [Admin] revoga a autorização pública. */
+export async function revokeReviewAdmin(reviewId: string): Promise<ReviewPrivate> {
+  const { data } = await http.post<ReviewPrivate>(`/reviews/admin/${reviewId}/revoke`);
+  return data;
+}
+
+/** DELETE /reviews/admin/{id} — [Admin] exclui permanentemente. */
+export async function deleteReviewAdmin(reviewId: string): Promise<void> {
+  await http.delete(`/reviews/admin/${reviewId}`);
+}

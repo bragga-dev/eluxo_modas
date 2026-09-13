@@ -39,6 +39,8 @@ import { AdminCategoriesPage } from "@/pages/admin/AdminCategoriesPage";
 import { AdminCampaignsPage } from "@/pages/admin/AdminCampaignsPage";
 import { AdminCampaignFormPage } from "@/pages/admin/AdminCampaignFormPage";
 import { AdminComingSoonPage } from "@/pages/admin/AdminComingSoonPage";
+import { AdminReviewsPage } from "@/pages/admin/AdminReviewsPage";
+import { AdminContactMessagesPage } from "@/pages/admin/AdminContactMessagesPage";
 
 export function AppRouter() {
   return (
@@ -77,8 +79,8 @@ export function AppRouter() {
               <Route path="/admin/campanhas/nova" element={<AdminCampaignFormPage />} />
               <Route path="/admin/campanhas/:campaignId" element={<AdminCampaignFormPage />} />
               <Route path="/admin/pedidos" element={<AdminComingSoonPage resource="pedidos" />} />
-              <Route path="/admin/avaliacoes" element={<AdminComingSoonPage resource="avaliações" />} />
-              <Route path="/admin/site" element={<AdminComingSoonPage resource="conteúdo do site" />} />
+              <Route path="/admin/avaliacoes" element={<AdminReviewsPage />} />
+              <Route path="/admin/mensagens" element={<AdminContactMessagesPage />} />
             </Route>
           </Route>
         </Route>
@@ -89,7 +91,8 @@ export function AppRouter() {
       <Route element={<AuthLayout />}>
         <Route path="/entrar" element={<LoginPage />} />
         <Route path="/cadastro" element={<RegisterPage />} />
-        <Route path="/recuperar-senha" element={<ResetPasswordPage />} />
+        <Route path="/recuperar-senha" element={<ForgotPasswordPage />} />
+        <Route path="/redefinir-senha" element={<ResetPasswordPage />} />
         <Route path="/verificacao-concluida" element={<VerifyEmailPage />} />
       </Route>
     </Routes>

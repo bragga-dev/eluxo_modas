@@ -26,7 +26,7 @@ export function MobileMenu({
   const restLinks = links.filter((link) => !GENDER_LINKS.some((g) => g.to === link.to));
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} title="Éluxo Modas" side="left">
+    <Drawer isOpen={isOpen} onClose={onClose} title="ÉLUXO MODAS" side="left">
       <nav className="flex flex-col p-5">
         {/* Feminino/Masculino são a navegação mais importante de uma loja de moda —
             recebem destaque editorial em vez de virar mais dois itens da lista. */}

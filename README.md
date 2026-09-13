@@ -1,6 +1,6 @@
-# Éluxo Modas — Frontend
+# ÉLUXO MODAS — Frontend
 
-Frontend da loja virtual Éluxo Modas, consumindo a API Django Ninja do
+Frontend da loja virtual ÉLUXO MODAS, consumindo a API Django Ninja do
 projeto `luxury_fashion`. React + TypeScript + Vite + Tailwind CSS.
 
 ## Stack

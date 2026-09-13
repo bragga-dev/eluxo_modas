@@ -1,10 +1,10 @@
 export function AboutPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
-      <span className="text-xs font-semibold uppercase tracking-widest text-gold-dark">Sobre a Éluxo Modas</span>
+      <span className="text-xs font-semibold uppercase tracking-widest text-gold-dark">Sobre a ÉLUXO MODAS</span>
       <h1 className="mt-2 font-display text-3xl text-ink sm:text-4xl">Mais que moda, é estilo de vida.</h1>
       <p className="mt-6 text-ink/70">
-        Somos a Éluxo Modas: uma marca criada por mulheres e homens que valorizam estilo, qualidade e autenticidade.
+        Somos a ÉLUXO MODAS: uma marca criada por mulheres e homens que valorizam estilo, qualidade e autenticidade.
         Nosso propósito é oferecer roupas e acessórios que unam elegância, conforto e modernidade, acompanhando
         você em todos os momentos.
       </p>

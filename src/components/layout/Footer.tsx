@@ -123,7 +123,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/10 px-4 py-4 text-center text-xs text-cream/50">
-        © {year} Éluxo Modas. Todos os direitos reservados.
+        © {year} ÉLUXO MODAS. Todos os direitos reservados.
       </div>
     </footer>
   );

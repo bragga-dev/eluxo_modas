@@ -24,7 +24,7 @@ export function ContactPage() {
     event.preventDefault();
     const body = encodeURIComponent(`Nome: ${name}\nE-mail: ${email}\nTelefone: ${phone}\n\n${message}`);
     window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-      "Contato via site — Éluxo Modas"
+      "Contato via site — ÉLUXO MODAS"
     )}&body=${body}`;
   }
 

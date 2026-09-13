@@ -76,7 +76,7 @@ export function Header() {
         <Link to="/" className="mr-1 flex shrink-0 items-center gap-2">
           <img src={logo} alt="" aria-hidden="true" className="hidden h-8 w-8 rounded-full object-cover sm:block" />
           <span className="font-display text-xl leading-none tracking-wide text-ink sm:text-2xl">
-            Éluxo <span className="text-gold-dark">Modas</span>
+            ÉLUXO <span className="text-gold-dark">MODAS</span>
           </span>
         </Link>
 

@@ -34,7 +34,7 @@ export function ProductCard({ product, rating }: ProductCardProps) {
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-ink/30">
-            <span className="font-display text-sm">Éluxo Modas</span>
+            <span className="font-display text-sm">ÉLUXO MODAS</span>
           </div>
         )}
 

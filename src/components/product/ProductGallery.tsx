@@ -9,7 +9,7 @@ export function ProductGallery({ images, productName }: { images: ProductImage[]
   if (sorted.length === 0) {
     return (
       <div className="flex aspect-square w-full items-center justify-center rounded-xl bg-cream">
-        <span className="font-display text-ink/30">Éluxo Modas</span>
+        <span className="font-display text-ink/30">ÉLUXO MODAS</span>
       </div>
     );
   }

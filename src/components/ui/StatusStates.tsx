@@ -1,3 +1,4 @@
+// src/components/ui/StatusStates.tsx
 import type { ReactNode } from "react";
 import { Button } from "./Button";
 
@@ -12,7 +13,9 @@ export function EmptyState({ title, description, action, icon }: StateProps) {
   return (
     <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-black/10 bg-white/60 px-6 py-16 text-center">
       {icon}
-      <h3 className="font-display text-xl text-ink">{title}</h3>
+      {/* Sem `font-display` fixo: herda Playfair na Loja e Montserrat em Conta/Admin
+          via as regras de .account-scope/.admin-scope em index.css. */}
+      <h3 className="text-xl text-ink">{title}</h3>
       {description && <p className="max-w-sm text-sm text-ink/60">{description}</p>}
       {action}
     </div>
@@ -30,7 +33,7 @@ export function ErrorState({
 }: Partial<ErrorStateProps>) {
   return (
     <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-red-100 bg-red-50/60 px-6 py-16 text-center">
-      <h3 className="font-display text-xl text-ink">{title}</h3>
+      <h3 className="text-xl text-ink">{title}</h3>
       <p className="max-w-sm text-sm text-ink/60">{description}</p>
       {onRetry && (
         <Button variant="outline" size="sm" onClick={onRetry}>

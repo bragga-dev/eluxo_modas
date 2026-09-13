@@ -1,3 +1,4 @@
+// src/layouts/AuthLayout.tsx
 import { Outlet } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -20,7 +21,7 @@ export function AuthLayout() {
 
         <div className="flex flex-1 items-center justify-center px-4 py-12">
           <div className="w-full max-w-md">
-            <div className="rounded-2xl bg-white p-8 shadow-card">
+            <div className="rounded-xl bg-white p-8 shadow-card">
               <Outlet />
             </div>
           </div>

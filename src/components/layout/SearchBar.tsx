@@ -1,8 +1,9 @@
+// src/components/layout/SearchBar.tsx
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { SearchIcon } from "@/components/ui/Icons";
 
-export function SearchBar({ className = "" }: { className?: string }) {
+export function SearchBar({ className = "", autoFocus = false }: { className?: string; autoFocus?: boolean }) {
   const [term, setTerm] = useState("");
   const navigate = useNavigate();
 
@@ -20,6 +21,7 @@ export function SearchBar({ className = "" }: { className?: string }) {
       <input
         id="global-search"
         type="search"
+        autoFocus={autoFocus}
         value={term}
         onChange={(e) => setTerm(e.target.value)}
         placeholder="Buscar produtos..."

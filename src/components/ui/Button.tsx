@@ -1,3 +1,4 @@
+// src/components/ui/Button.tsx
 import { forwardRef, type ButtonHTMLAttributes } from "react";
 
 type Variant = "primary" | "secondary" | "outline" | "ghost" | "danger";
@@ -19,10 +20,14 @@ const VARIANT_CLASSES: Record<Variant, string> = {
 };
 
 const SIZE_CLASSES: Record<Size, string> = {
-  sm: "text-sm px-4 py-1.5 rounded-full",
-  md: "text-sm px-6 py-2.5 rounded-full",
-  lg: "text-base px-8 py-3 rounded-full",
+  sm: "text-sm px-4 py-1.5",
+  md: "text-sm px-6 py-2.5",
+  lg: "text-base px-8 py-3",
 };
+
+// Radius controlado por --radius-button (definido em index.css): pill na Loja/Conta,
+// rounded-md dentro de .admin-scope. Evita uma prop extra em toda chamada de <Button />.
+const RADIUS_STYLE = { borderRadius: "var(--radius-button)" } as const;
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   { variant = "primary", size = "md", isLoading, fullWidth, disabled, className = "", children, ...rest },
@@ -32,6 +37,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     <button
       ref={ref}
       disabled={disabled || isLoading}
+      style={RADIUS_STYLE}
       className={`inline-flex items-center justify-center gap-2 font-sans font-semibold tracking-wide
         transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
         disabled:cursor-not-allowed disabled:opacity-60

@@ -1,3 +1,4 @@
+/* src/index.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,14 +6,34 @@
 @layer base {
   html {
     font-family: "Montserrat", sans-serif;
+    /* Radius contextual do botão: loja/conta usam pill; admin sobrescreve para rounded-md
+       em .admin-scope, evitando prop extra em cada <Button /> só para trocar o raio. */
+    --radius-button: 9999px;
   }
 
   body {
     @apply bg-white text-ink antialiased;
   }
 
+  /* Playfair Display é exclusivo do modo Loja/editorial. Conta e Admin usam Montserrat
+     mesmo em headings — ver .admin-scope e .account-scope abaixo. */
   h1, h2, h3, h4 {
     font-family: "Playfair Display", serif;
+  }
+
+  .admin-scope h1,
+  .admin-scope h2,
+  .admin-scope h3,
+  .admin-scope h4,
+  .account-scope h1,
+  .account-scope h2,
+  .account-scope h3,
+  .account-scope h4 {
+    font-family: "Montserrat", sans-serif;
+  }
+
+  .admin-scope {
+    --radius-button: 0.375rem; /* rounded-md — linguagem SaaS, não pill */
   }
 
   :focus-visible {

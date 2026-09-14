@@ -9,9 +9,9 @@ import { useState } from "react";
 import logo from "@/assets/logo.jpeg";
 
 const NAV_LINKS = [
+  { label: "Início", to: "/" },
   { label: "Feminino", to: "/produtos?genero=feminino" },
   { label: "Masculino", to: "/produtos?genero=masculino" },
-  { label: "Novidades", to: "/produtos" },
   { label: "Categorias", to: "/categorias" },
   { label: "Sobre", to: "/sobre" },
   { label: "Contato", to: "/contato" },

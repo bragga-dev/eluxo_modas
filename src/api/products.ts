@@ -23,6 +23,7 @@ function buildParams(filters: ProductListFilters): Record<string, string | numbe
   if (filters.size) params.size = filters.size;
   if (filters.color) params.color = filters.color;
   if (filters.in_stock_only) params.in_stock_only = filters.in_stock_only;
+  if (filters.sort) params.sort = filters.sort;
   return params;
 }
 

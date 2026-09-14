@@ -108,6 +108,8 @@ export interface ProductListFilters {
   size?: ProductSize;
   color?: ProductColor;
   in_stock_only?: boolean;
+  /** "recent" ordena pelos mais recém-criados primeiro (usado na home). */
+  sort?: "recent";
 }
 
 /** Filtros aceitos por GET /products/admin/list (inclui inativos). */
